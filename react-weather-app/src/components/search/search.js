@@ -4,13 +4,13 @@ import { GEO_API_URL, geoApiOptions } from "../api"
 
 const Search = ({ onSearchChange }) => {
     const [search, setSearch] = useState(null)
-    const handleChange = (searhData) => {
-        setSearch(searhData)
-        onSearchChange(searhData)
+    const handleChange = (searchData) => {
+        setSearch(searchData)
+        onSearchChange(searchData)
     }
 
     const loadOptions = (inputValue) => {
-        fetch(`${GEO_API_URL}/cities?minPopulation=1000000&namePrefix=${inputValue}`, geoApiOptions)
+        return fetch(`${GEO_API_URL}/cities?minPopulation=1000000&namePrefix=${inputValue}`, geoApiOptions)
             .then(response => response.json())
             .then(response => {
                 return {
@@ -21,8 +21,7 @@ const Search = ({ onSearchChange }) => {
                         }
                     })
                 }
-            }
-            )
+            })
             .catch(err => console.error(err));
     }
     return (
