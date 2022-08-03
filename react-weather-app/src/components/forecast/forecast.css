@@ -51,10 +51,11 @@
     justify-content: space-between;
     align-items: center;
 }
-.daily-details-grid-item:first-child{
+
+.daily-details-grid-item label:first-child{
     color: #757575;
 }
 
-.daily-details-grid-item:last-child{
+.daily-details-grid-item label:last-child{
     color: #212121;
 }

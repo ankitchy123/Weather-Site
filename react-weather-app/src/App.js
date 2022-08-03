@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { WEATHER_API_KEY, WEATHER_API_URL } from './components/api';
 import CurrentWeather from './components/current-weather/current-weather';
@@ -6,6 +6,34 @@ import Forecast from './components/forecast/forecast';
 import Search from './components/search/search';
 
 function App() {
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    }
+  }
+  function showPosition(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude
+    const currentWeatherFetch = fetch(`${WEATHER_API_URL}/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`)
+    const forecastFetch = fetch(`${WEATHER_API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`)
+
+    Promise.all([currentWeatherFetch, forecastFetch])
+      .then(async (resp) => {
+        const weatherResp = await resp[0].json()
+        const forecastResp = await resp[1].json()
+
+        setCurrentWeather({ city: weatherResp.name, ...weatherResp })
+        setForecast({ city: forecastResp.name, ...forecastResp })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  useEffect(() => {
+    getLocation()
+  }, [])
+
   const [currentWeather, setCurrentWeather] = useState(null)
   const [forecast, setForecast] = useState(null)
 
