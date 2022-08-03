@@ -10,7 +10,7 @@
 
 # production
 /build
-./src/components/api
+.env
 
 # misc
 .DS_Store
